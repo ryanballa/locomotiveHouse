@@ -1,0 +1,29 @@
+@use 'node_modules/utopia-core-scss/src/utopia' as utopia;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+
+html {
+	font-family: $font-stack;
+}
+
+/* @link https://utopia.fyi/type/calculator?c=320,18,1.2,1240,20,1.25,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
+:root {
+	@include utopia.generateTypeScale(
+		(
+			'minWidth': 320,
+			'maxWidth': 1240,
+			'minFontSize': 18,
+			'maxFontSize': 20,
+			'minTypeScale': 1.2,
+			'maxTypeScale': 1.25,
+			'positiveSteps': 5,
+			'negativeSteps': 2,
+			'prefix': 'step-'
+		)
+	);
+}
+
+h1 {
+	color: $primary_color;
+	font-size: var(--step-5);
+	margin: var(--space-s) 0;
+}
