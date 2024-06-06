@@ -4,13 +4,14 @@
 	const dispatch = createEventDispatcher();
 
 	export let type = 'regular';
+	export let working = false;
 
 	function handleClick() {
 		dispatch('click');
 	}
 </script>
 
-<button on:click={handleClick} class={type}><slot /></button>
+<button on:click={handleClick} class={`${type} ${working ? 'working' : ''}`}><slot /></button>
 
 <style lang="scss">
 	@import 'src/lib/scss/_variables';
@@ -33,6 +34,9 @@
 		}
 		&.positive {
 			background-color: $btn-positive;
+		}
+		&.working {
+			background-color: purple;
 		}
 	}
 </style>

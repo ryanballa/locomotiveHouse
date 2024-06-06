@@ -1,17 +1,25 @@
 <script>
 	import close from '$lib/assets/close.svg';
 
-	export let header;
-	export let showModal = false;
+	let { header, showModal = $bindable() } = $props();
 
-	let dialog;
-	$: if (dialog && showModal) dialog.showModal();
+	let dialog = $state();
+
+	$effect(() => {
+		if (dialog && showModal) {
+			dialog.showModal();
+		} else {
+			dialog.close();
+		}
+	});
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
 <dialog
 	bind:this={dialog}
-	on:close={() => (showModal = false)}
+	on:close={() => {
+		showModal = false;
+	}}
 	on:click|self={() => dialog.close()}
 >
 	<header>
