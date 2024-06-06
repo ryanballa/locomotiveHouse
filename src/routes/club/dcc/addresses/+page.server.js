@@ -14,6 +14,7 @@ export async function load({ params }) {
 			addresses: data.result
 		};
 	} catch (err) {
+		console.log(err);
 		return error(500, err);
 	}
 }
