@@ -10,7 +10,7 @@
 
 	let showAddAddressModal = $state(false);
 
-	let { data } = $props();
+	let { data, form } = $props();
 
 	let actionModalIsShown = $state(false);
 	let actionModalIsError = $state(false);
@@ -19,9 +19,9 @@
 	let actionModalStatus = $state('');
 	let actionModalIsWorking = $state(false);
 
-	let form = {
+	let formValidators = {
 		address: {
-			validators: [Validators.required, Validators.unique]
+			validators: [Validators.required]
 		},
 		owner: {
 			validators: [Validators.required]
@@ -64,9 +64,11 @@
 		actionModalAddress = address;
 	}
 
+	$inspect(form);
+
 	function onSubmit(e) {
 		if (e?.detail?.valid) {
-			console.log(e.detail.data);
+			showAddAddressModal = false;
 		} else {
 			console.log('Invalid Form');
 		}
@@ -75,11 +77,21 @@
 
 <section class="content">
 	<Dialog header="Add Address" bind:showModal={showAddAddressModal}>
-		<Form {form} on:submit={onSubmit} action="/club/dcc/addresses?/add" method="POST">
+		<Form
+			id="test"
+			{formValidators}
+			on:submit={onSubmit}
+			action="/club/dcc/addresses?/add"
+			method="POST"
+		>
 			<div>
 				<Input label="Address" name="address" />
 				<ErrorMessage fieldName="address" errorKey="required" message="Address is required" />
-				<ErrorMessage fieldName="address" errorKey="unique" message="Address is already in use" />
+				{#if form?.uniqueAddress === false}<ErrorMessage
+						fieldName="address"
+						errorKey="unique"
+						message="Address is already in use"
+					/>{/if}
 			</div>
 			<div>
 				<Input label="Description" name="description" />
@@ -89,7 +101,7 @@
 				<ErrorMessage fieldName="owner" errorKey="required" message="Owner is required" />
 			</div>
 			<div>
-				<input type="submit" value="Add Address" />
+				<Input label="Add" type="submit" />
 			</div>
 		</Form>
 	</Dialog>

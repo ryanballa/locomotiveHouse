@@ -48,7 +48,7 @@ export const actions = {
 			});
 			const data = await response.json();
 			if (data.error) {
-				return fail(400, { data, unique: false });
+				return fail(400, { address, uniqueAddress: false });
 			}
 			return data;
 		} catch (err) {

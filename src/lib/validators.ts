@@ -14,11 +14,6 @@ function required(value: any): ValidatorResult {
 	return { required: { error: false } };
 }
 
-function unique(errors: any): ValidatorResult {
-	return { unique: { error: true, message: 'Field must be unique' } };
-}
-
 export const Validators = {
-	required,
-	unique
+	required
 };

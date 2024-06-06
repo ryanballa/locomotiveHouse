@@ -6,14 +6,7 @@
 	import { writable } from 'svelte/store';
 	import { enhance } from '$app/forms';
 
-	export let action;
-	export let method;
-
-	export let form: {
-		[inputName: string]: {
-			validators: ValidatorFn[];
-		};
-	} = {};
+	let { action, method, id, formValidators = {} } = $props();
 
 	const dispatch = createEventDispatcher();
 	let errors = writable({});
@@ -25,8 +18,8 @@
 	}
 
 	function validateField(field, value) {
-		form[field]?.validators &&
-			form[field].validators.forEach((fn) => {
+		formValidators[field]?.validators &&
+			formValidators[field].validators.forEach((fn) => {
 				const error = fn(value);
 				errors.update((e) => {
 					e[field] = { ...e[field], ...error };
@@ -47,7 +40,6 @@
 			const [key, value] = field;
 			data[key] = value;
 		}
-		console.log(form?.unique);
 		validateForm(data);
 
 		return dispatch('submit', { valid: isFormValid(), data });
@@ -56,7 +48,7 @@
 	setContext('form', { errors });
 </script>
 
-<form on:submit|preventDefault={onSubmit} use:enhance {action} {method}>
+<form {id} on:submit|preventDefault={onSubmit} use:enhance {action} {method}>
 	<slot />
 </form>
 

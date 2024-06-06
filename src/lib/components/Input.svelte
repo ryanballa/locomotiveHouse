@@ -1,10 +1,38 @@
 <script lang="ts">
-	export let type = 'text';
-	export let label;
-	export let name;
+	let { type = 'text', label, name } = $props();
 </script>
 
-<label for={name}
-	>{label}
-	<input {name} {type} />
-</label>
+{#if type === 'submit'}
+	<input type="submit" value={label} />
+{:else}
+	<label for={name}
+		><span>{label}</span>
+		<input {name} {type} />
+	</label>
+{/if}
+
+<style lang="scss">
+	@import 'src/lib/scss/_variables';
+	label {
+		display: flex;
+		font-weight: bold;
+		flex-flow: column;
+		width: 100%;
+	}
+	input {
+		border: 2px solid $border-color;
+		border-radius: $border-radius;
+		padding: var(--space-xs);
+		font-size: var(--step--1);
+
+		&[type='submit'] {
+			background-color: $btn-regular;
+			color: $btn-color;
+			border: none;
+		}
+
+		&[type='submit']:hover {
+			cursor: pointer;
+		}
+	}
+</style>
