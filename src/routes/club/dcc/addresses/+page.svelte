@@ -116,37 +116,41 @@
 			<Button on:click={() => (showAddAddressModal = true)}>Add New</Button>
 		</div>
 	</header>
-	<table>
-		<thead>
-			<tr>
-				<th scope="col">Number</th>
-				<th scope="col">In Use</th>
-				<th scope="col">Last Used By</th>
-				<th scope="col">Action</th>
-			</tr>
-		</thead>
-		<tbody>
-			{#each data.addresses as address, index}
+	{#await data.addresses}
+		Loading addreses...
+	{:then addresses}
+		<table>
+			<thead>
 				<tr>
-					<th scope="row">{address.number}</th>
-					<td><span class={`in-use-flag ${address.in_use}`}>{address.in_use}</span></td>
-					<td>{address.owner}</td>
-					<td>
-						<Button
-							on:click={() =>
-								toggleButton({
-									id: address.id,
-									address: address.number,
-									status: address.in_use ? 'active' : 'inactive'
-								})}
-							type={address.in_use ? 'warning' : 'positive'}
-							>{#if address.in_use}Deactivate{:else}Activate{/if}</Button
-						>
-					</td>
+					<th scope="col">Number</th>
+					<th scope="col">In Use</th>
+					<th scope="col">Last Used By</th>
+					<th scope="col">Action</th>
 				</tr>
-			{/each}
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+				{#each addresses as address, index}
+					<tr>
+						<th scope="row">{address.number}</th>
+						<td><span class={`in-use-flag ${address.in_use}`}>{address.in_use}</span></td>
+						<td>{address.owner}</td>
+						<td>
+							<Button
+								on:click={() =>
+									toggleButton({
+										id: address.id,
+										address: address.number,
+										status: address.in_use ? 'active' : 'inactive'
+									})}
+								type={address.in_use ? 'warning' : 'positive'}
+								>{#if address.in_use}Deactivate{:else}Activate{/if}</Button
+							>
+						</td>
+					</tr>
+				{/each}
+			</tbody>
+		</table>
+	{/await}
 </section>
 
 <style lang="scss">
