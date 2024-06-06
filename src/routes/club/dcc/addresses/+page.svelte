@@ -8,7 +8,7 @@
 	import { applyAction, deserialize } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
 
-	let showAddAddressModal = false;
+	let showAddAddressModal = $state(false);
 
 	let { data } = $props();
 
