@@ -1,13 +1,15 @@
 <script lang="ts">
-	let { type = 'text', label, name } = $props();
+	let { type = 'text', label = '', name = '', value = '' } = $props();
 </script>
 
 {#if type === 'submit'}
 	<input type="submit" value={label} />
+{:else if type === 'hidden'}
+	<input type="hidden" {name} {value} />
 {:else}
 	<label for={name}
 		><span>{label}</span>
-		<input {name} {type} />
+		<input {name} {type} {value} />
 	</label>
 {/if}
 

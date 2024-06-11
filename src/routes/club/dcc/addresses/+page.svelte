@@ -64,8 +64,6 @@
 		actionModalAddress = address;
 	}
 
-	$inspect(form);
-
 	function onSubmit(e) {
 		if (e?.detail?.valid) {
 			showAddAddressModal = false;
@@ -78,7 +76,7 @@
 <section class="content">
 	<Dialog header="Add Address" bind:showModal={showAddAddressModal}>
 		<Form
-			id="test"
+			id="addAddress"
 			{formValidators}
 			on:submit={onSubmit}
 			action="/club/dcc/addresses?/add"
