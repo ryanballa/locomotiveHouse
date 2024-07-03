@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import Button from '$lib/components/Button.svelte';
 	import Dialog from '$lib/components/Dialog.svelte';
 	import Form from '$lib/components/Form.svelte';
@@ -8,8 +8,12 @@
 	import { applyAction, deserialize } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
 
+	interface DeletionArgs {
+		id: number;
+		number?: number;
+	}
+
 	let { data, form } = $props();
-	console.log(data.consists);
 
 	let showAddConsistModal = $state(false);
 	let actionModalIsShown = $state(false);
@@ -18,7 +22,7 @@
 	let actionModalNumber = $state(0);
 	let actionModalIsWorking = $state(false);
 
-	async function handleDeletion({ id }) {
+	async function handleDeletion({ id }: DeletionArgs) {
 		actionModalIsWorking = true;
 		const response = await fetch('/club/dcc/consists?/delete', {
 			method: 'POST',
@@ -52,24 +56,26 @@
 
 	function getFirstUsableNumber({ data }) {
 		let lastNumber = 0;
-		for (let i = 0; i < data.length; i++) {
-			const currentNumber = data[i].number;
-			if (currentNumber === lastNumber + 1) {
-				lastNumber = currentNumber;
-			}
-			if (currentNumber > lastNumber + 1) {
-				lastNumber = lastNumber + 1;
-			}
-			if (data[i].number === 127) {
-				//Invalid number used to trigger error in UI
-				lastNumber = 999;
-				break;
+		if (data) {
+			for (let i = 0; i < data.length; i++) {
+				const currentNumber = data[i].number;
+				if (currentNumber === lastNumber + 1) {
+					lastNumber = currentNumber;
+				}
+				if (currentNumber > lastNumber + 1) {
+					lastNumber = lastNumber + 1;
+				}
+				if (data[i].number === 127) {
+					//Invalid number used to trigger error in UI
+					lastNumber = 999;
+					break;
+				}
 			}
 		}
 		return lastNumber;
 	}
 
-	function deleteConsist({ id, number }) {
+	function deleteConsist({ id, number }: DeletionArgs) {
 		actionModalId = id;
 		actionModalIsShown = true;
 		actionModalNumber = number;

@@ -1,16 +1,22 @@
-import { error, fail } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 import { API_ADDRESS } from '$env/static/private';
 
-export async function load({ params }) {
+export async function load({ params, cookies }) {
+	const auth = cookies.get('AuthorizationToken');
 	try {
 		const response = await fetch(`${API_ADDRESS}addresses/`, {
 			method: 'GET',
 			headers: {
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+				Authorization: auth
 			}
 		});
 		const data = await response.json();
+		if (data.error && data.error === 'Unauthorized') {
+			redirect(302, '/login');
+		}
 		return {
+			auth,
 			addresses: data.result
 		};
 	} catch (err) {
@@ -19,7 +25,8 @@ export async function load({ params }) {
 }
 
 export const actions = {
-	add: async ({ request }) => {
+	add: async ({ request, cookies }) => {
+		const auth = cookies.get('AuthorizationToken');
 		try {
 			const form = await request.formData();
 			const address = form.get('address');
@@ -37,7 +44,8 @@ export const actions = {
 			const response = await fetch(`${API_ADDRESS}addresses/`, {
 				method: 'POST',
 				headers: {
-					'Content-Type': 'application/json'
+					'Content-Type': 'application/json',
+					Authorization: auth
 				},
 				body: JSON.stringify({
 					number: address,
@@ -55,13 +63,14 @@ export const actions = {
 			return error(500, err);
 		}
 	},
-	activation: async ({ request }) => {
+	activation: async ({ request, cookies }) => {
 		try {
 			const data = await request.json();
 			const apiRequest = await fetch(`${API_ADDRESS}addresses/${data.id}`, {
 				method: 'PUT',
 				headers: {
-					'Content-Type': 'application/json'
+					'Content-Type': 'application/json',
+					Authorization: auth
 				},
 				body: JSON.stringify({
 					number: data.address,

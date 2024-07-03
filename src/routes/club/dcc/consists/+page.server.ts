@@ -1,21 +1,27 @@
-import { error, fail } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 import { API_ADDRESS } from '$env/static/private';
 
 function sortByNumber({ data }) {
-	return data.sort((a, b) => a.number - b.number);
+	return data.sort((a: { number: number }, b: { number: number }) => a.number - b.number);
 }
 
-export async function load({ params }) {
+export async function load({ cookies }) {
+	const auth = cookies.get('AuthorizationToken');
 	try {
 		const response = await fetch(`${API_ADDRESS}consists/`, {
 			method: 'GET',
 			headers: {
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+				Authorization: auth
 			}
 		});
 		const data = await response.json();
+		if (data.error && data.error === 'Unauthorized') {
+			redirect(302, '/login');
+		}
 		return {
-			consists: sortByNumber({ data: data.result })
+			auth,
+			consists: sortByNumber({ data: data?.result })
 		};
 	} catch (err) {
 		return error(500, err);

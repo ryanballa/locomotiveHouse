@@ -1,3 +1,9 @@
+<script>
+	import UserButton from 'clerk-sveltekit/client/UserButton.svelte';
+	import SignedIn from 'clerk-sveltekit/client/SignedIn.svelte';
+	import SignedOut from 'clerk-sveltekit/client/SignedOut.svelte';
+</script>
+
 <header>
 	<div class="left_wrapper">
 		<a class="fs1" id="primary_logo" href="/">Locomotive House</a>
@@ -10,7 +16,14 @@
 	</div>
 	<nav aria-label="Account navigation">
 		<ul>
-			<li><a href="/">Login</a></li>
+			<li>
+				<SignedIn>
+					<UserButton afterSignOutUrl="/" />
+				</SignedIn>
+				<SignedOut>
+					<a href="/sign-in">Sign in</a> <span>or</span> <a href="/sign-up">Sign up</a>
+				</SignedOut>
+			</li>
 		</ul>
 	</nav>
 </header>
