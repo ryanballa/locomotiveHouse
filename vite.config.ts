@@ -5,6 +5,9 @@ export default defineConfig({
 	plugins: [sveltekit()],
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}']
+	},
+	server: {
+		host: '127.0.0.1'
 	}
 	// css: {
 	// 	preprocessorOptions: {
