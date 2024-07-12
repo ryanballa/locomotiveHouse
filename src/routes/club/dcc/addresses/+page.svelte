@@ -94,9 +94,10 @@
 			<div>
 				<Input label="Description" name="description" />
 			</div>
-			<div>
-				<Input label="Owner" name="owner" />
-				<ErrorMessage fieldName="owner" errorKey="required" message="Owner is required" />
+			<div class="staticField">
+				<strong>Owner</strong>
+				<div class="fieldValue">{data.user.firstName}</div>
+				<Input type="hidden" name="owner" value={data.user.firstName} />
 			</div>
 			<div>
 				<Input label="Add" type="submit" />
@@ -170,6 +171,10 @@
 	}
 	.addButtonWrapper {
 		margin-bottom: var(--space-m);
+	}
+	.staticField {
+		display: flex;
+		flex-direction: column;
 	}
 	header {
 		text-align: center;

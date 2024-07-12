@@ -1,7 +1,10 @@
+import { createClerkClient } from '@clerk/clerk-sdk-node';
+import { CLERK_SECRET_KEY } from '$env/static/private';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { API_ADDRESS } from '$env/static/private';
 
-export async function load({ params, cookies }) {
+export async function load({ cookies, locals }) {
+	const clerkClient = await createClerkClient({ secretKey: CLERK_SECRET_KEY });
 	const auth = cookies.get('AuthorizationToken');
 	try {
 		const response = await fetch(`${API_ADDRESS}addresses/`, {
@@ -11,13 +14,19 @@ export async function load({ params, cookies }) {
 				Authorization: auth
 			}
 		});
+		const userData = await clerkClient.users.getUser(locals.session.userId);
 		const data = await response.json();
+
 		if (data.error && data.error === 'Unauthorized') {
 			redirect(302, '/login');
 		}
 		return {
 			auth,
-			addresses: data.result
+			addresses: data.result,
+			user: {
+				firstName: userData?.firstName,
+				lastName: userData?.lastName
+			}
 		};
 	} catch (err) {
 		return error(500, err);
@@ -64,6 +73,7 @@ export const actions = {
 		}
 	},
 	activation: async ({ request, cookies }) => {
+		const auth = cookies.get('AuthorizationToken');
 		try {
 			const data = await request.json();
 			const apiRequest = await fetch(`${API_ADDRESS}addresses/${data.id}`, {

@@ -55,24 +55,24 @@
 	}
 
 	function getFirstUsableNumber({ data }) {
-		let lastNumber = 0;
 		if (data) {
-			for (let i = 0; i < data.length; i++) {
-				const currentNumber = data[i].number;
-				if (currentNumber === lastNumber + 1) {
-					lastNumber = currentNumber;
-				}
-				if (currentNumber > lastNumber + 1) {
-					lastNumber = lastNumber + 1;
-				}
-				if (data[i].number === 127) {
-					//Invalid number used to trigger error in UI
-					lastNumber = 999;
-					break;
+			const numbers = [];
+			let highestNumber = 0;
+			data.forEach((consist) => {
+				numbers.push(consist.number);
+			});
+			for (let i = 0; i < numbers.length - 1; i++) {
+				if (numbers[i + 1] - numbers[i] > 1) {
+					highestNumber = numbers[i];
+				} else {
+					highestNumber = numbers[i] + 1;
 				}
 			}
+			if (highestNumber <= 127) {
+				return highestNumber + 1;
+			}
 		}
-		return lastNumber;
+		return null;
 	}
 
 	function deleteConsist({ id, number }: DeletionArgs) {
@@ -114,9 +114,10 @@
 					<span class="valueLike">{getFirstUsableNumber({ data: consists })}</span>
 					<Input type="hidden" name="number" value={getFirstUsableNumber({ data: consists })} />
 				</div>
-				<div>
-					<Input label="Owner" name="owner" />
-					<ErrorMessage fieldName="owner" errorKey="required" message="Owner is required" />
+				<div class="staticDisplay">
+					<span class="labelLike">Owner</span>
+					<span class="valueLike">{data.user.firstName}</span>
+					<Input type="hidden" name="owner" value={data.user.firstName} />
 				</div>
 				<div>
 					<Input label="Add" type="submit" />

@@ -1,3 +1,5 @@
+import { createClerkClient } from '@clerk/clerk-sdk-node';
+import { CLERK_SECRET_KEY } from '$env/static/private';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { API_ADDRESS } from '$env/static/private';
 
@@ -5,7 +7,8 @@ function sortByNumber({ data }) {
 	return data.sort((a: { number: number }, b: { number: number }) => a.number - b.number);
 }
 
-export async function load({ cookies }) {
+export async function load({ cookies, locals }) {
+	const clerkClient = await createClerkClient({ secretKey: CLERK_SECRET_KEY });
 	const auth = cookies.get('AuthorizationToken');
 	try {
 		const response = await fetch(`${API_ADDRESS}consists/`, {
@@ -15,13 +18,18 @@ export async function load({ cookies }) {
 				Authorization: auth
 			}
 		});
+		const userData = await clerkClient.users.getUser(locals.session.userId);
 		const data = await response.json();
 		if (data.error && data.error === 'Unauthorized') {
 			redirect(302, '/login');
 		}
 		return {
 			auth,
-			consists: sortByNumber({ data: data?.result })
+			consists: sortByNumber({ data: data?.result }),
+			user: {
+				firstName: userData?.firstName,
+				lastName: userData?.lastName
+			}
 		};
 	} catch (err) {
 		return error(500, err);
@@ -29,7 +37,8 @@ export async function load({ cookies }) {
 }
 
 export const actions = {
-	add: async ({ request }) => {
+	add: async ({ request, cookies }) => {
+		const auth = cookies.get('AuthorizationToken');
 		try {
 			const form = await request.formData();
 			const number = form.get('number');
@@ -46,7 +55,8 @@ export const actions = {
 			const response = await fetch(`${API_ADDRESS}consists/`, {
 				method: 'POST',
 				headers: {
-					'Content-Type': 'application/json'
+					'Content-Type': 'application/json',
+					Authorization: auth
 				},
 				body: JSON.stringify({
 					number,
@@ -63,13 +73,15 @@ export const actions = {
 			return error(500, err);
 		}
 	},
-	delete: async ({ request }) => {
+	delete: async ({ request, cookies }) => {
+		const auth = cookies.get('AuthorizationToken');
 		try {
 			const data = await request.json();
 			const apiRequest = await fetch(`${API_ADDRESS}consists/${data.id}`, {
 				method: 'DELETE',
 				headers: {
-					'Content-Type': 'application/json'
+					'Content-Type': 'application/json',
+					Authorization: auth
 				}
 			});
 			const apiResponse = await apiRequest.json();

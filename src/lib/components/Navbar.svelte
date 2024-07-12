@@ -18,10 +18,11 @@
 		<ul>
 			<li>
 				<SignedIn>
-					<UserButton afterSignOutUrl="/" />
+					<UserButton afterSignOutUrl="/admin/terminate-session" />
 				</SignedIn>
 				<SignedOut>
-					<a href="/sign-in">Sign in</a> <span>or</span> <a href="/sign-up">Sign up</a>
+					<a href="/sign-in?redirectUrl=%2F">Sign in</a> <span>or</span>
+					<a href="/sign-up?redirectUrl=%2F">Sign up</a>
 				</SignedOut>
 			</li>
 		</ul>
