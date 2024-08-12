@@ -9,10 +9,13 @@
 	<section class="layout_single_column">
 		<slot />
 	</section>
-	<Footer />
 </main>
+<Footer />
 
 <style lang="scss">
+	main {
+		flex-grow: 1;
+	}
 	.layout_single_column {
 		padding: var(--space-s);
 		display: flex;
