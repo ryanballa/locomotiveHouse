@@ -7,6 +7,9 @@ const config = {
 	// for more information about preprocessors
 	preprocess: vitePreprocess(),
 	kit: {
+		csrf: {
+			checkOrigin: true
+		},
 		adapter: adapter({
 			routes: {
 				include: ['/*'],

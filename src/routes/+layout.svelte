@@ -19,6 +19,8 @@
 	.layout_single_column {
 		padding: var(--space-s);
 		display: flex;
-		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		justify-content: space-around;
 	}
 </style>

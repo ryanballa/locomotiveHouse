@@ -5,7 +5,7 @@
 			<li><a href="/data-deletion">Data Deletion Policy</a></li>
 		</ul>
 	</nav>
-	<p><small>&copy; 2024 Locomotive House</small></p>
+	<p><small>&copy; 2025 Locomotive House</small></p>
 </footer>
 
 <style lang="scss">

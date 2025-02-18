@@ -1,7 +1,7 @@
 <section>
 	<header>
 		<h1>Locomotive House Data Deletion Policy</h1>
-		<h2>Last Updated: 8/12/2024</h2>
+		<h2>Last Updated: 1/6/2025</h2>
 		<ol>
 			<li>
 				<p><b>Introduction</b></p>

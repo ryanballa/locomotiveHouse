@@ -5,7 +5,7 @@
 
 <section>
 	<header>
-		<h1>Club Locomotives Dashboard</h1>
+		<h1>Dashboard</h1>
 	</header>
 	<nav class="dashboard-nav">
 		<ul>
