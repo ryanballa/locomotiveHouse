@@ -5,6 +5,10 @@ import { CLERK_SECRET_KEY } from '$env/static/private';
 import { createClerkClient } from '@clerk/clerk-sdk-node';
 
 const refreshCookie = async function ({ event, resolve }) {
+	const isTerminate = event.url.href.includes('session/terminate');
+	if (isTerminate) {
+		return resolve(event);
+	}
 	const clerkClient = await createClerkClient({ secretKey: CLERK_SECRET_KEY });
 	if (event.locals.session) {
 		const sessions = await clerkClient.sessions.getSessionList({

@@ -35,8 +35,9 @@
 				<ol>
 					<li>
 						<p>
-							<b>1. Contact Us:</b> Submit your request by emailing us at [email address] with the subject
-							line "Data Deletion Request." Please include the following information in your request:
+							<b>1. Contact Us:</b> Submit your request by emailing us at info@locomotivehouse.com with
+							the subject line "Data Deletion Request." Please include the following information in your
+							request:
 						</p>
 						<ul>
 							<li>Your full name</li>

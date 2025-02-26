@@ -121,33 +121,38 @@ export async function load({ cookies, locals }) {
 
 		const clubAssociationsData = await clubAssociations.json();
 		const internalUsersData = await internalUsers.json();
-		const userData = await clerkClient.users.getUser(locals.session.userId);
 		const usersData = await clerkClient.users.getUserList();
-		const userDataJSON = JSON.parse(JSON.stringify(usersData)).data;
 		const clubsData = await clubsResponse.json();
+
+		const userDataJSON = JSON.parse(JSON.stringify(usersData)).data;
 
 		if (clubsData.error && clubsData.error === 'Unauthorized') {
 			redirect(302, '/login');
 		}
 
 		const usersByName = userDataJSON.map((item) => {
+			const internalUserId = internalUsersData.result.find((u) => u.token === item.id);
+			if (!internalUserId) {
+				return null;
+			}
 			return {
 				firstName: item.firstName,
 				lastName: item.lastName,
 				token: item.id,
-				id: internalUsersData.result.find((u) => u.token === item.id).id
+				id: internalUserId.id
 			};
 		});
-		console.log(clubAssociations);
+
 		return {
 			auth,
 			clubs: clubsData.result,
 			clubAssociations: clubAssociationsData.result,
 			user: {
-				firstName: userData?.firstName,
-				lastName: userData?.lastName
+				firstName: userDataJSON?.firstName,
+				lastName: userDataJSON?.lastName
 			},
-			users: usersByName
+			users: userDataJSON,
+			usersByName
 		};
 	} catch (err) {
 		return error(500, err);

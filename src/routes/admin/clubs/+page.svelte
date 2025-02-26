@@ -14,17 +14,17 @@
 
 	let { data } = $props();
 
-	const usersPerClub = data.clubs.map((club) => {
-		const members = data.clubAssociations.filter((ca) => ca.clubId === club.id);
-		const augmentedMembers = data.users.map((u) => {
-			members.find((m) => m.token === u.id);
-		});
+	// const usersPerClub = data?.clubs?.map((club) => {
+	// 	const members = data.clubAssociations?.filter((ca) => ca.clubId === club.id);
+	// 	const augmentedMembers = data?.users?.map((u) => {
+	// 		members?.find((m) => m.token === u.id);
+	// 	});
 
-		return {
-			...club,
-			augmentedMembers
-		};
-	});
+	// 	return {
+	// 		...club,
+	// 		augmentedMembers
+	// 	};
+	// });
 
 	let addClubFormValidators = {
 		name: {
@@ -124,7 +124,10 @@
 				<Dropdown
 					label="User"
 					name="userId"
-					options={data.users.map((u) => ({ label: `${u.firstName} ${u.lastName}`, value: u.id }))}
+					options={data.usersByName.map((u) => ({
+						label: `${u.firstName} ${u.lastName}`,
+						value: u.id
+					}))}
 				/>
 				<ErrorMessage fieldName="userId" errorKey="required" message="User is required" />
 			</div>
@@ -142,38 +145,43 @@
 	<p>Add or remove clubs and user assignments.</p>
 	<Button on:click={() => (showAddClubModal = true)}>Add Club</Button>
 	<ul>
-		{#each data.clubs as club}
-			<li>
-				<h3>
-					{club.name}
-					<button
-						onclick={() => {
-							showEditClubModal = true;
-							selectedClubId = club.id;
-						}}>Edit</button
-					>
-				</h3>
-				<h4>Members</h4>
-				<ul>
-					{#each data.clubAssociations as association}
-						{#if association.club_id === club.id}
-							<li>
-								{data.users.find((u) => u.id === association.user_id).firstName}
-								{data.users.find((u) => u.id === association.user_id).lastName}
-							</li>
-						{/if}
-					{/each}
-					<li>
-						<Button
-							on:click={() => {
+		{#if (data.clubs && data.clubs.length === 0) || !data.clubs}
+			<li>No clubs</li>
+		{/if}
+		{#if data.clubs && data.clubs.length > 0}
+			{#each data.clubs as club}
+				<li>
+					<h3>
+						{club.name}
+						<button
+							onclick={() => {
+								showEditClubModal = true;
 								selectedClubId = club.id;
-								showAssignUserModal = true;
-							}}>Assign User</Button
+							}}>Edit</button
 						>
-					</li>
-				</ul>
-			</li>
-		{/each}
+					</h3>
+					<h4>Members</h4>
+					<ul>
+						{#each data.clubAssociations as association}
+							{#if association.club_id === club.id && data.usersByName[0]}
+								<li>
+									{data.usersByName.find((u) => u.id === association.user_id).firstName}
+									{data.usersByName.find((u) => u.id === association.user_id).lastName}
+								</li>
+							{/if}
+						{/each}
+						<li>
+							<Button
+								on:click={() => {
+									selectedClubId = club.id;
+									showAssignUserModal = true;
+								}}>Assign User</Button
+							>
+						</li>
+					</ul>
+				</li>
+			{/each}
+		{/if}
 	</ul>
 </section>
 
