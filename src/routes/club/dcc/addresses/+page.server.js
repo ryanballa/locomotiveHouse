@@ -40,14 +40,14 @@ export const actions = {
 			const form = await request.formData();
 			const address = form.get('address');
 			const description = form.get('description');
-			const owner = form.get('owner');
+			const user_id = form.get('user_id');
 
 			if (!address) {
 				return fail(400, { address, missing: true });
 			}
 
-			if (!owner) {
-				return fail(400, { owner, missing: true });
+			if (!user_id) {
+				return fail(400, { user_id, missing: true });
 			}
 
 			const response = await fetch(`${API_ADDRESS}addresses/`, {
@@ -60,7 +60,7 @@ export const actions = {
 					number: address,
 					description,
 					in_use: true,
-					owner
+					user_id
 				})
 			});
 			const data = await response.json();

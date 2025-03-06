@@ -23,7 +23,7 @@
 		address: {
 			validators: [Validators.required]
 		},
-		owner: {
+		user_id: {
 			validators: [Validators.required]
 		}
 	};
@@ -97,7 +97,7 @@
 			<div class="staticField">
 				<strong>Owner</strong>
 				<div class="fieldValue">{data.user.firstName}</div>
-				<Input type="hidden" name="owner" value={data.user.firstName} />
+				<Input type="hidden" name="user_id" value={data.user.id} />
 			</div>
 			<div>
 				<Input label="Add" type="submit" />
@@ -144,7 +144,7 @@
 					<tr>
 						<th scope="row">{address.number}</th>
 						<td><span class={`in-use-flag ${address.in_use}`}>{address.in_use}</span></td>
-						<td>{address.owner}</td>
+						<td>{address.user_id}</td>
 						<td>
 							<Button
 								on:click={() =>

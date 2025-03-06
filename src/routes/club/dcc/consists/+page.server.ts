@@ -42,14 +42,14 @@ export const actions = {
 		try {
 			const form = await request.formData();
 			const number = form.get('number');
-			const owner = form.get('owner');
+			const user_id = form.get('user_id');
 
 			if (!number) {
 				return fail(400, { number, missing: true });
 			}
 
-			if (!owner) {
-				return fail(400, { owner, missing: true });
+			if (!user_id) {
+				return fail(400, { user_id, missing: true });
 			}
 
 			const response = await fetch(`${API_ADDRESS}consists/`, {
@@ -61,7 +61,7 @@ export const actions = {
 				body: JSON.stringify({
 					number,
 					in_use: true,
-					owner
+					user_id
 				})
 			});
 			const data = await response.json();

@@ -85,7 +85,7 @@
 		number: {
 			validators: [Validators.required]
 		},
-		owner: {
+		user_id: {
 			validators: [Validators.required]
 		}
 	};
@@ -117,7 +117,7 @@
 				<div class="staticDisplay">
 					<span class="labelLike">Owner</span>
 					<span class="valueLike">{data.user.firstName}</span>
-					<Input type="hidden" name="owner" value={data.user.firstName} />
+					<Input type="hidden" name="user_id" value={data.user.id} />
 				</div>
 				<div>
 					<Input label="Add" type="submit" />
@@ -146,7 +146,7 @@
 				{#each consists as consist, index}
 					<tr>
 						<th scope="row">{consist.number}</th>
-						<td>{consist.owner}</td>
+						<td>{consist.user_id}</td>
 						<td>
 							<Button
 								on:click={() => deleteConsist({ number: consist.number, id: consist.id })}
