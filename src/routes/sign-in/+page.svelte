@@ -3,5 +3,5 @@
 </script>
 
 <div>
-	<SignIn redirectUrl="/" />
+	<SignIn redirectUrl="/admin/sync-user" />
 </div>

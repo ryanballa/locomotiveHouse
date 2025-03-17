@@ -25,7 +25,8 @@ export async function load({ cookies, locals }) {
 			addresses: data.result,
 			user: {
 				firstName: userData?.firstName,
-				lastName: userData?.lastName
+				lastName: userData?.lastName,
+				id: response.headers.get('x-user-id')
 			}
 		};
 	} catch (err) {

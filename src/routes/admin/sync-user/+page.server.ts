@@ -6,6 +6,8 @@ import { redirect } from '@sveltejs/kit';
 export async function load({ cookies, locals }) {
 	const clerkClient = await createClerkClient({ secretKey: CLERK_SECRET_KEY });
 	const auth = cookies.get('AuthorizationToken');
+	const { session } = locals;
+	console.log(session);
 
 	const usersData = await clerkClient.users.getUserList();
 	const userDataJSON = JSON.parse(JSON.stringify(usersData)).data;

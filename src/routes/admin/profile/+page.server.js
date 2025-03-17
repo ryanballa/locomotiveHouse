@@ -29,7 +29,6 @@ export async function load({ cookies, locals }) {
 		if (clubsData.error && clubsData.error === 'Unauthorized') {
 			redirect(302, '/login');
 		}
-		console.log(locals.session.userId);
 
 		return {
 			auth,

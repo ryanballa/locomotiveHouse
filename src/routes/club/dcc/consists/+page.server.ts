@@ -28,7 +28,8 @@ export async function load({ cookies, locals }) {
 			consists: sortByNumber({ data: data?.result }),
 			user: {
 				firstName: userData?.firstName,
-				lastName: userData?.lastName
+				lastName: userData?.lastName,
+				id: response.headers.get('x-user-id')
 			}
 		};
 	} catch (err) {
@@ -37,7 +38,8 @@ export async function load({ cookies, locals }) {
 }
 
 export const actions = {
-	add: async ({ request, cookies }) => {
+	add: async ({ request, cookies, locals }) => {
+		console.log(locals);
 		const auth = cookies.get('AuthorizationToken');
 		try {
 			const form = await request.formData();
@@ -55,6 +57,7 @@ export const actions = {
 			const response = await fetch(`${API_ADDRESS}consists/`, {
 				method: 'POST',
 				headers: {
+					'X-User-Id': 1,
 					'Content-Type': 'application/json',
 					Authorization: auth
 				},

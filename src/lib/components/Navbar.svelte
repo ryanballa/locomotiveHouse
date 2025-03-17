@@ -21,8 +21,8 @@
 					<UserButton afterSignOutUrl="/session/terminate" />
 				</SignedIn>
 				<SignedOut>
-					<a href="/sign-in?redirectUrl=%2F">Sign in</a> <span>or</span>
-					<a href="/sign-up?redirectUrl=%2F">Sign up</a>
+					<a href="/sign-in?redirectUrl=/admin/sync-user">Sign in</a> <span>or</span>
+					<a href="/sign-up?redirectUrl=/admin/sync-user">Sign up</a>
 				</SignedOut>
 			</li>
 		</ul>
