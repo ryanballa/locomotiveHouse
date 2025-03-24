@@ -1,4 +1,4 @@
-import { createClerkClient } from '@clerk/clerk-sdk-node';
+import { createClerkClient } from '@clerk/backend';
 import { CLERK_SECRET_KEY } from '$env/static/private';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { API_ADDRESS } from '$env/static/private';

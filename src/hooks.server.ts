@@ -2,7 +2,7 @@ import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import { handleClerk } from 'clerk-sveltekit/server';
 import { CLERK_SECRET_KEY } from '$env/static/private';
-import { createClerkClient } from '@clerk/clerk-sdk-node';
+import { createClerkClient } from '@clerk/backend';
 
 const refreshCookie = async function ({ event, resolve }) {
 	const isTerminate = event.url.href.includes('session/terminate');
