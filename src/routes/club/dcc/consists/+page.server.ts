@@ -18,7 +18,7 @@ export async function load({ cookies, locals }) {
 				Authorization: auth
 			}
 		});
-		const userData = await clerkClient.users.getUser(locals.session.userId);
+		const userData = await clerkClient.users.getUser(locals.auth.userId);
 		const data = await response.json();
 		if (data.error && data.error === 'Unauthorized') {
 			redirect(302, '/login');

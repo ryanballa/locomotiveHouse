@@ -1,5 +1,5 @@
 <script lang="ts">
-	import UserProfile from 'clerk-sveltekit/client/UserProfile.svelte';
+	import { UserProfile } from 'svelte-clerk';
 
 	let { data } = $props();
 

@@ -15,7 +15,7 @@
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/adapter-cloudflare": "^5.1.0",
-		"@sveltejs/kit": "^2.0.0",
+		"@sveltejs/kit": "^2.16.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"@types/eslint": "^8.56.0",
 		"@typescript-eslint/eslint-plugin": "^7.0.0",
@@ -26,7 +26,7 @@
 		"prettier": "^3.1.1",
 		"prettier-plugin-svelte": "^3.1.2",
 		"sass": "^1.76.0",
-		"svelte": "^5.0.0-next.150",
+		"svelte": "^5.0.0",
 		"svelte-check": "^3.6.0",
 		"tslib": "^2.4.1",
 		"typescript": "^5.0.0",
@@ -38,6 +38,7 @@
 	"dependencies": {
 		"@clerk/backend": "^1.25.5",
 		"clerk-sveltekit": "^0.4.2",
+		"svelte-clerk": "^0.10.4",
 		"wrangler": "^3.60.2"
 	}
 }

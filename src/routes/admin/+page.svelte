@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SignedIn from 'clerk-sveltekit/client/SignedIn.svelte';
+	import { SignedIn } from 'svelte-clerk';
 </script>
 
 <SignedIn let:user>

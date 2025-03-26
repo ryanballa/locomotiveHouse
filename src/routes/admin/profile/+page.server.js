@@ -23,7 +23,7 @@ export async function load({ cookies, locals }) {
 			}
 		});
 		const clubAssociationsData = await clubAssociations.json();
-		const userData = await clerkClient.users.getUser(locals.session.userId);
+		const userData = await clerkClient.users.getUser(locals.auth.userId);
 		const clubsData = await clubsResponse.json();
 
 		if (clubsData.error && clubsData.error === 'Unauthorized') {

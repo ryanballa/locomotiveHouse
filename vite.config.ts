@@ -9,11 +9,4 @@ export default defineConfig({
 	server: {
 		host: '127.0.0.1'
 	}
-	// css: {
-	// 	preprocessorOptions: {
-	// 		scss: {
-	// 			additionalData: '@import "src/lib/scss/_variables";'
-	// 		}
-	// 	}
-	// }
 });
