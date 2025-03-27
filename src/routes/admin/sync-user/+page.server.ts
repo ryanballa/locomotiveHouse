@@ -6,8 +6,6 @@ import { redirect, error } from '@sveltejs/kit';
 export async function load({ cookies, locals }) {
 	const clerkClient = await createClerkClient({ secretKey: CLERK_SECRET_KEY });
 	const auth = cookies.get('AuthorizationToken');
-	const { session } = locals;
-	console.log(session);
 
 	try {
 		const usersData = await clerkClient.users.getUserList();
@@ -26,14 +24,15 @@ export async function load({ cookies, locals }) {
 				headers: {
 					'Content-Type': 'application/json',
 					Authorization: auth
-				}
+				},
+				body: JSON.stringify({
+					token: userDataJSON[0].id
+				})
 			});
 			const data = await response.json();
-			redirect(302, '/');
-		} else {
-			redirect(302, '/');
 		}
 	} catch (err) {
 		return error(500, err);
 	}
+	throw redirect(302, '/');
 }
