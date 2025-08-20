@@ -18,7 +18,11 @@ export async function load({ cookies, locals }) {
 			}
 		});
 		const internalUsersData = await internalUsers.json();
-		if (!internalUsersData.result.find((user) => user.token === userDataJSON[0].id)) {
+		if (
+			(internalUsersData &&
+				!internalUsersData.result.find((user) => user.token === userDataJSON[0].id)) ||
+			!internalUsersData
+		) {
 			const response = await fetch(`${API_ADDRESS}users/${userDataJSON[0].id}/`, {
 				method: 'POST',
 				headers: {
