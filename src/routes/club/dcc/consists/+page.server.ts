@@ -10,6 +10,9 @@ function sortByNumber({ data }) {
 export async function load({ cookies, locals }) {
 	const clerkClient = await createClerkClient({ secretKey: CLERK_SECRET_KEY });
 	const auth = cookies.get('AuthorizationToken');
+	if (!auth) {
+		redirect(302, '/sign-in');
+	}
 	try {
 		const response = await fetch(`${API_ADDRESS}consists/`, {
 			method: 'GET',
@@ -21,7 +24,7 @@ export async function load({ cookies, locals }) {
 		const userData = await clerkClient.users.getUser(locals.auth.userId);
 		const data = await response.json();
 		if (data.error && data.error === 'Unauthorized') {
-			redirect(302, '/login');
+			redirect(302, '/sign-in');
 		}
 		return {
 			auth,
@@ -39,8 +42,8 @@ export async function load({ cookies, locals }) {
 
 export const actions = {
 	add: async ({ request, cookies, locals }) => {
-		console.log(locals);
 		const auth = cookies.get('AuthorizationToken');
+		console.log(locals);
 		try {
 			const form = await request.formData();
 			const number = form.get('number');
@@ -57,7 +60,7 @@ export const actions = {
 			const response = await fetch(`${API_ADDRESS}consists/`, {
 				method: 'POST',
 				headers: {
-					'X-User-Id': 1,
+					'X-User-Id': locals.lhUserId,
 					'Content-Type': 'application/json',
 					Authorization: auth
 				},
@@ -68,7 +71,7 @@ export const actions = {
 				})
 			});
 			const data = await response.json();
-			if (data.error) {
+			if (data.error || data.error === 'Unauthorized') {
 				return fail(400, { number, uniqueNumber: false });
 			}
 			return data;

@@ -55,24 +55,20 @@
 	}
 
 	function getFirstUsableNumber({ data }) {
-		if (data) {
-			const numbers = [];
-			let highestNumber = 0;
-			data.forEach((consist) => {
-				numbers.push(consist.number);
-			});
-			for (let i = 0; i < numbers.length - 1; i++) {
-				if (numbers[i + 1] - numbers[i] > 1) {
-					highestNumber = numbers[i];
-				} else {
-					highestNumber = numbers[i] + 1;
-				}
-			}
-			if (highestNumber <= 127) {
-				return highestNumber + 1;
+		if (!data || !data.length) {
+			return 1;
+		}
+
+		const usedNumbers = new Set(data.map((item) => item.number));
+
+		// Find first unused number starting from 1
+		for (let i = 1; i <= 127; i++) {
+			if (!usedNumbers.has(i)) {
+				return i;
 			}
 		}
-		return null;
+
+		return null; // All numbers 1-127 are used
 	}
 
 	function deleteConsist({ id, number }: DeletionArgs) {
@@ -81,14 +77,7 @@
 		actionModalNumber = number;
 	}
 
-	let formValidators = {
-		number: {
-			validators: [Validators.required]
-		},
-		user_id: {
-			validators: [Validators.required]
-		}
-	};
+	let formValidators = {};
 </script>
 
 <section class="content">
@@ -102,27 +91,31 @@
 		Loading consists...
 	{:then consists}
 		<Dialog header="Add Consist" bind:showModal={showAddConsistModal}>
-			<Form
-				id="addConsist"
-				{formValidators}
-				on:submit={onSubmit}
-				action="/club/dcc/consists?/add"
-				method="POST"
-			>
-				<div class="staticDisplay">
-					<span class="labelLike">Number</span>
-					<span class="valueLike">{getFirstUsableNumber({ data: consists })}</span>
-					<Input type="hidden" name="number" value={getFirstUsableNumber({ data: consists })} />
-				</div>
-				<div class="staticDisplay">
-					<span class="labelLike">Owner</span>
-					<span class="valueLike">{data.user.firstName}</span>
-					<Input type="hidden" name="user_id" value={data.user.id} />
-				</div>
-				<div>
-					<Input label="Add" type="submit" />
-				</div>
-			</Form>
+			{#if getFirstUsableNumber({ data: consists }) && data.user.id}
+				<Form
+					id="addConsist"
+					{formValidators}
+					on:submit={onSubmit}
+					action="/club/dcc/consists?/add"
+					method="POST"
+				>
+					<div class="staticDisplay">
+						<span class="labelLike">Number</span>
+						<span class="valueLike">{getFirstUsableNumber({ data: consists })}</span>
+						<Input type="hidden" name="number" value={getFirstUsableNumber({ data: consists })} />
+					</div>
+					<div class="staticDisplay">
+						<span class="labelLike">Owner</span>
+						<span class="valueLike">{data.user.firstName}</span>
+						<Input type="hidden" name="user_id" value={data.user.id} />
+					</div>
+					<div>
+						<Input label="Add" type="submit" />
+					</div>
+				</Form>
+			{:else}
+				<p>No available numbers or user information not loaded.</p>
+			{/if}
 		</Dialog>
 		<Dialog header="Are you sure?" bind:showModal={actionModalIsShown}>
 			<p>This is will delete consist {actionModalNumber}</p>
