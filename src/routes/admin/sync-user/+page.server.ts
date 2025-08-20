@@ -26,7 +26,8 @@ export async function load({ cookies, locals }) {
 					Authorization: auth
 				},
 				body: JSON.stringify({
-					token: userDataJSON[0].id
+					token: userDataJSON[0].id,
+					permission_id: 2 // Regular
 				})
 			});
 			const data = await response.json();
