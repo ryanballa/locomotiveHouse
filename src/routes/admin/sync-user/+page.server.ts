@@ -6,7 +6,6 @@ import { redirect, error } from '@sveltejs/kit';
 export async function load({ cookies, locals }) {
 	const clerkClient = await createClerkClient({ secretKey: CLERK_SECRET_KEY });
 	const auth = cookies.get('AuthorizationToken');
-
 	try {
 		const usersData = await clerkClient.users.getUserList();
 		const userDataJSON = JSON.parse(JSON.stringify(usersData)).data;
@@ -25,13 +24,14 @@ export async function load({ cookies, locals }) {
 			const response = await fetch(`${API_ADDRESS}users/${userDataJSON[0].id}/`, {
 				method: 'POST',
 				headers: {
-					'X-User-Id': locals.lhUserId,
+					'X-User-ID': 1, //bogus, just needs to match
 					'Content-Type': 'application/json',
 					Authorization: auth
 				},
 				body: JSON.stringify({
 					token: userDataJSON[0].id,
-					permission_id: 2 // Regular
+					permission: 2, // Regular
+					user_id: 1 //bogus, just needs to match
 				})
 			});
 			const data = await response.json();
