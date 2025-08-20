@@ -28,12 +28,12 @@ const refreshCookie = async function ({ event, resolve }) {
 			}
 		});
 		const internalUsersData = await internalUsers.json();
-		const internalUserId = internalUsersData.result.find(
+		const internalUserId = internalUsersData?.result?.find(
 			(user) => user.token === event.locals.auth.userId
 		);
 
 		// Set additional session variables
-		event.locals.lhUserId = internalUserId.id;
+		event.locals.lhUserId = internalUserId?.id;
 
 		event.cookies.set('AuthorizationToken', `Bearer ${JSON.stringify(token)}`, {
 			httpOnly: true,

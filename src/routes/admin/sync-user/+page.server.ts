@@ -18,7 +18,6 @@ export async function load({ cookies, locals }) {
 			}
 		});
 		const internalUsersData = await internalUsers.json();
-		console.log('internalUsersData:', internalUsersData);
 		if (
 			!internalUsersData?.result?.find((user) => user.token === userDataJSON[0].id) ||
 			!internalUsersData
