@@ -47,14 +47,9 @@ export const actions = {
 		try {
 			const form = await request.formData();
 			const number = form.get('number');
-			const user_id = form.get('user_id');
 
 			if (!number) {
 				return fail(400, { number, missing: true });
-			}
-
-			if (!user_id) {
-				return fail(400, { user_id, missing: true });
 			}
 
 			const response = await fetch(`${API_ADDRESS}consists/`, {
@@ -67,7 +62,7 @@ export const actions = {
 				body: JSON.stringify({
 					number,
 					in_use: true,
-					user_id
+					user_id: locals.lhUserId.toString()
 				})
 			});
 			const data = await response.json();

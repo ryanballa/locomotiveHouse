@@ -107,7 +107,6 @@
 					<div class="staticDisplay">
 						<span class="labelLike">Owner</span>
 						<span class="valueLike">{data.user.firstName}</span>
-						<Input type="hidden" name="user_id" value={data.user.id} />
 					</div>
 					<div>
 						<Input label="Add" type="submit" />
