@@ -22,6 +22,7 @@ export async function load({ cookies, locals }) {
 			const response = await fetch(`${API_ADDRESS}users/${userDataJSON[0].id}/`, {
 				method: 'POST',
 				headers: {
+					'X-User-Id': locals.lhUserId,
 					'Content-Type': 'application/json',
 					Authorization: auth
 				},
