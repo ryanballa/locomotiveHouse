@@ -12,6 +12,7 @@ export async function load({ cookies, locals }) {
 		const internalUsers = await fetch(`${API_ADDRESS}users/`, {
 			method: 'GET',
 			headers: {
+				'X-User-ID': 1,
 				'Content-Type': 'application/json',
 				Authorization: auth
 			}
@@ -21,7 +22,7 @@ export async function load({ cookies, locals }) {
 			!internalUsersData?.result?.find((user) => user.token === userDataJSON[0].id) ||
 			!internalUsersData
 		) {
-			const response = await fetch(`${API_ADDRESS}users/${userDataJSON[0].id}/`, {
+			const response = await fetch(`${API_ADDRESS}users/`, {
 				method: 'POST',
 				headers: {
 					'X-User-ID': 1, //bogus, just needs to match
