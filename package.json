@@ -37,6 +37,7 @@
 	"type": "module",
 	"dependencies": {
 		"@clerk/backend": "^1.25.5",
+		"@sentry/sveltekit": "^10.5.0",
 		"clerk-sveltekit": "^0.4.2",
 		"svelte-clerk": "^0.10.4",
 		"wrangler": "^3.60.2"
