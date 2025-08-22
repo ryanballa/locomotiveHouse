@@ -33,7 +33,6 @@ const refreshCookie = async function ({ event, resolve }) {
 		});
 
 		const token = await clerkClient.sessions.getToken(sessions?.data[0].id, 'LocomotiveHouseAPI');
-
 		const internalUsers = await fetch(`${API_ADDRESS}users/`, {
 			method: 'GET',
 			headers: {
@@ -41,6 +40,7 @@ const refreshCookie = async function ({ event, resolve }) {
 				Authorization: `Bearer ${JSON.stringify(token)}`
 			}
 		});
+
 		const internalUsersData = await internalUsers.json();
 		const internalUserId = internalUsersData?.result?.find(
 			(user) => user.token === event.locals.auth.userId

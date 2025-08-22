@@ -40,7 +40,7 @@ export async function load({ cookies, locals }) {
 			user: {
 				firstName: userData?.firstName,
 				lastName: userData?.lastName,
-				id: response.headers.get('x-user-id')
+				user_id: locals.lhUserId.toString()
 			}
 		};
 	} catch (err) {
@@ -64,7 +64,6 @@ export const actions = {
 			const response = await fetch(`${API_ADDRESS}addresses/`, {
 				method: 'POST',
 				headers: {
-					'X-User-Id': locals.lhUserId,
 					'Content-Type': 'application/json',
 					Authorization: auth
 				},

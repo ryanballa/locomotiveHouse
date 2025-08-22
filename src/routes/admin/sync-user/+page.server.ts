@@ -12,7 +12,6 @@ export async function load({ cookies, locals }) {
 		const internalUsers = await fetch(`${API_ADDRESS}users/`, {
 			method: 'GET',
 			headers: {
-				'X-User-ID': 1,
 				'Content-Type': 'application/json',
 				Authorization: auth
 			}
@@ -25,17 +24,20 @@ export async function load({ cookies, locals }) {
 			const response = await fetch(`${API_ADDRESS}users/`, {
 				method: 'POST',
 				headers: {
-					'X-User-ID': 1, //bogus, just needs to match
 					'Content-Type': 'application/json',
 					Authorization: auth
 				},
 				body: JSON.stringify({
 					token: userDataJSON[0].id,
-					permission: 2, // Regular
-					user_id: 1 //bogus, just needs to match
+					permission: 2 // Regular
 				})
 			});
-			const data = await response.json();
+			const lhUserData = await response.json();
+			await clerkClient.users.updateUserMetadata(userDataJSON[0].id, {
+				privateMetadata: {
+					lhUserId: lhUserData.id
+				}
+			});
 		}
 	} catch (err) {
 		return error(500, err);

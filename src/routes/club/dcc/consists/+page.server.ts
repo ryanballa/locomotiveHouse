@@ -32,7 +32,7 @@ export async function load({ cookies, locals }) {
 			user: {
 				firstName: userData?.firstName,
 				lastName: userData?.lastName,
-				id: response.headers.get('x-user-id')
+				id: locals.lhUserId.toString()
 			}
 		};
 	} catch (err) {
@@ -43,7 +43,6 @@ export async function load({ cookies, locals }) {
 export const actions = {
 	add: async ({ request, cookies, locals }) => {
 		const auth = cookies.get('AuthorizationToken');
-		console.log(locals);
 		try {
 			const form = await request.formData();
 			const number = form.get('number');
@@ -55,7 +54,6 @@ export const actions = {
 			const response = await fetch(`${API_ADDRESS}consists/`, {
 				method: 'POST',
 				headers: {
-					'X-User-Id': locals.lhUserId,
 					'Content-Type': 'application/json',
 					Authorization: auth
 				},
