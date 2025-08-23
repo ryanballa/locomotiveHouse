@@ -3,7 +3,7 @@ import { CLERK_SECRET_KEY } from '$env/static/private';
 import { API_ADDRESS } from '$env/static/private';
 import { redirect, error } from '@sveltejs/kit';
 
-export async function load({ cookies, locals }) {
+export async function load({ cookies }) {
 	const clerkClient = await createClerkClient({ secretKey: CLERK_SECRET_KEY });
 	const auth = cookies.get('AuthorizationToken');
 	try {
