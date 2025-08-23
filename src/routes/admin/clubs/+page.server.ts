@@ -91,7 +91,7 @@ export const actions = {
 	}
 } satisfies Actions;
 
-export async function load({ cookies, locals }) {
+export async function load({ cookies }) {
 	const clerkClient = await createClerkClient({ secretKey: CLERK_SECRET_KEY });
 	const auth = cookies.get('AuthorizationToken');
 	try {
